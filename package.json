@@ -1,0 +1,52 @@
+{
+  "name": "@date/holidays-us",
+  "version": "0.1.0",
+  "description": "USA bank and (some) public holidays",
+  "main": "lib",
+  "keywords": [
+    "holidays",
+    "holiday",
+    "dates",
+    "date",
+    "usa",
+    "us",
+    "new years",
+    "presidents",
+    "valentines",
+    "martin luther king jr",
+    "washington",
+    "memorial",
+    "independence",
+    "labor",
+    "columbus",
+    "veterans",
+    "halloween",
+    "thanksgiving",
+    "christmas"
+  ],
+  "author": "Eli Doran <eli+npm@elidoran.com>",
+  "license": "MIT",
+  "scripts": {
+    "compile": "coffee --bare --compile lib",
+    "clean": "rm -rf lib/*.js",
+    "prepublish": "npm run compile",
+    "postpublish": "npm run clean",
+    "test": "mocha --compilers coffee:coffee-script/register --reporter spec --bail --check-leaks test/lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/elidoran/node-date-holidays-us.git"
+  },
+  "bugs": "http://github.com/elidoran/node-date-holidays-us/issues",
+  "devDependencies": {
+    "coffee-script": "^1.10.0",
+    "mocha": "^2.3.3"
+  },
+  "dependencies": {
+    "@date/generator": "^0.1.0",
+    "@date/holidays": "^0.2.0"
+  },
+  "engines": {
+    "node": ">=0.10"
+  }
+}
