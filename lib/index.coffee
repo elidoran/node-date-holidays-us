@@ -1,7 +1,13 @@
+# use `gen` to calculate holiday dates
 gen = require('@date/generator')()
 
 # create a Holidays instance to setup
 holidays = require('@date/holidays')()
+
+#
+# provide specific functions to calculate a holiday date for a year.
+# these are then used in the generator functions as well.
+#
 
 holidays.newYearsDay = (year) ->
   date = new Date year, 0, 1 # january 1st
