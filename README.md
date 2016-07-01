@@ -46,7 +46,6 @@ Functions which generate a specific holiday based on a specified year:
 2. valentinesDay()
 3. martinLutherKingDay()
 4. presidentsDay()
-5. easter()
 6. mothersDay()
 7. memorialDay()
 8. fathersDay()
