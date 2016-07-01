@@ -15,8 +15,8 @@ npm install @date/holidays-us --save
 
 ## Usage
 
-
 ```javascript
+// get Holidays instance with both public and bank holidays
 var holidays = require('@date/holidays-us')
 
 var date = new Date(2016, 0, 1) // New Year's Day 2016
@@ -37,6 +37,39 @@ holidays.isHoliday(date, {
   bank:true // must be a bank holiday
 })
 ```
+
+
+## Only Bank Holidays
+
+```javascript
+// this has only the bank holidays, not the 'public' ones
+var holidays = require('@date/holidays-us').bank()
+
+// returns false, Valentine's isn't a bank holiday
+holidays.isHoliday(new Date(2016, 1, 14))
+
+// returns true, New Year's is a bank holiday
+holidays.isHoliday(new Date(2016, 0, 1))
+```
+
+
+## Only Public Holidays
+
+```javascript
+// this has only the non-bank holidays
+var holidays = require('@date/holidays-us').public()
+
+// returns true, Valentine's is a public holiday
+holidays.isHoliday(new Date(2016, 1, 14))
+
+// returns false, because New Year's is a bank holiday
+holidays.isHoliday(new Date(2016, 0, 1))
+
+// NOTE: technically, I suppose the bank holidays are also
+// public holidays, but, if you want both, use the default
+// instance which has both
+```
+
 
 ## API: Generators
 
