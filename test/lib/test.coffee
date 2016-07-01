@@ -13,7 +13,7 @@ tests = [
   { # with observed day
     name: 'newYearsDay'
     main:
-      info: name: 'New Year\'s Day', bank: true
+      info: name: 'New Year\'s Day'
       year: 2017
       month: 0
       day: 1
@@ -98,7 +98,7 @@ tests = [
   { # with observed day
     name: 'independenceDay'
     main:
-      info: name: 'Independence Day', bank: true
+      info: name: 'Independence Day'
       year: 2015
       month: 6
       day: 4
@@ -132,7 +132,7 @@ tests = [
     main:
       info: name: 'Halloween', public: true
       year: 2015
-      month: 10
+      month: 9
       day: 31
   }
 
@@ -155,7 +155,7 @@ tests = [
   { # with observed day
     name: 'veteransDay'
     main:
-      info: name: 'Veterans Day', bank:true
+      info: name: 'Veterans Day'
       year: 2012
       month: 10
       day: 11 # sunday
@@ -186,7 +186,7 @@ tests = [
   { # with observed day
     name: 'christmas'
     main:
-      info: name: 'Christmas Day', bank: true
+      info: name: 'Christmas Day'
       year: 2016
       month: 11
       day: 25
@@ -214,6 +214,55 @@ describe 'test holidays-us', ->
       date = new Date 2016, 5, 4
       result = holidays.isHoliday date
       assert.equal result, false
+
+  describe 'with', ->
+
+    bankHolidayDates = [
+      { date: new Date(2016, 0, 1),   name: 'New Year\'s' }
+      { date: new Date(2016, 0, 18),  name: 'Martin Luther King Jr. Day' }
+      { date: new Date(2016, 1, 15),  name: 'President\'s Day' }
+      { date: new Date(2016, 4, 30),  name: 'Memorial Day' }
+      { date: new Date(2016, 6, 4),   name: 'Independence Day' }
+      { date: new Date(2016, 8, 5),   name: 'Labor Day' }
+      { date: new Date(2016, 9, 10),  name: 'Columbus Day' }
+      { date: new Date(2016, 10, 11), name: 'Veterans Day' }
+      { date: new Date(2016, 10, 24), name: 'Thanksgiving' }
+      { date: new Date(2016, 11, 25), name: 'Christmas' }
+      { date: new Date(2016, 11, 26), name: 'Christmas (Observed)' }
+    ]
+
+    publicHolidayDates = [
+      { date: new Date(2016, 1, 14), name: 'Valentine\'s' }
+      { date: new Date(2016, 4, 8),  name: 'Mother\'s Day' }
+      { date: new Date(2016, 5, 19), name: 'Father\'s Day' }
+      { date: new Date(2016, 9, 31), name: 'Halloween' }
+    ]
+
+    describe 'bank-only', ->
+
+      bankHolidays = holidays.bank()
+
+      it 'should have bank holidays', ->
+        for test in bankHolidayDates
+          assert.equal true, bankHolidays.isHoliday(test.date), test.name
+
+      it 'shouldn\'t have public holidays', ->
+        for test in publicHolidayDates
+          assert.equal false, bankHolidays.isHoliday(test.date), test.name
+
+
+    describe 'public-only', ->
+
+      publicHolidays = holidays.public()
+
+      it 'shouldn\'t have bank holidays', ->
+        for test in bankHolidayDates
+          assert.equal false, publicHolidays.isHoliday(test.date), test.name
+
+      it 'should have public holidays', ->
+        for test in publicHolidayDates
+          assert.equal true, publicHolidays.isHoliday(test.date), test.name
+
 
 
   for test in tests

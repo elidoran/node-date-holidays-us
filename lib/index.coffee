@@ -2,7 +2,8 @@
 gen = require('@date/generator')()
 
 # create a Holidays instance to setup
-holidays = require('@date/holidays')()
+Holidays = require('@date/holidays')
+holidays = Holidays()
 
 #
 # provide specific functions to calculate a holiday date for a year.
@@ -77,7 +78,7 @@ holidays.laborDay = (year) -> gen.first().monday().september year
 
 holidays.columbusDay = (year) -> gen.second().monday().october year
 
-holidays.halloween = (year) -> new Date year, 10, 31
+holidays.halloween = (year) -> new Date year, 9, 31
 
 holidays.veteransDay = (year) ->
   date = new Date year, 10, 11 # november 11th
@@ -128,19 +129,43 @@ pushHolidayFromDate = (array, date, info, observedInfo) ->
 
   return
 
-# use one generator to add the usual holidays
-holidays.add (year) ->
+
+generatePublicHolidays = (year) ->
 
   holidayArray = []
-
-  date = holidays.newYearsDay year
-  info = name: 'New Year\'s Day', bank: true
-  observedInfo = name: 'New Year\'s Day (Observed)', bank: true
-  pushHolidayFromDate holidayArray, date, info, observedInfo
 
   date = holidays.valentinesDay year
   info = name: 'Valentine\'s Day', public: true
   pushHolidayFromDate holidayArray, date, info
+
+  date = holidays.easter year
+  info = name: 'Easter', bank: false
+  pushHolidayFromDate holidayArray, date, info
+
+  date = holidays.mothersDay year
+  info = name: 'Mother\'s Day', public: true
+  pushHolidayFromDate holidayArray, date, info
+
+  date = holidays.fathersDay year
+  info = name: 'Father\'s Day', public: true
+  pushHolidayFromDate holidayArray, date, info
+
+  date = holidays.halloween year
+  info = name: 'Halloween', public: true
+  pushHolidayFromDate holidayArray, date, info
+
+  return holidayArray
+
+
+generateBankHolidays = (year) ->
+
+  holidayArray = []
+
+  date = holidays.newYearsDay year
+  info = name: 'New Year\'s Day'
+  if 0 < date.getDay() < 6 then info.bank = true
+  observedInfo = name: 'New Year\'s Day (Observed)', bank: true
+  pushHolidayFromDate holidayArray, date, info, observedInfo
 
   date = holidays.martinLutherKingDay year
   info = name: 'Martin Luther King Jr. Day', bank: true
@@ -151,45 +176,27 @@ holidays.add (year) ->
   observedInfo = name: 'President\'s Day (Observed)', bank: true
   pushHolidayFromDate holidayArray, date, info, observedInfo
 
-  date = holidays.easter year
-  info = name: 'Easter', bank: false
-  pushHolidayFromDate holidayArray, date, info
-
-  date = holidays.mothersDay year
-  info = name: 'Mother\'s Day', public: true
-  pushHolidayFromDate holidayArray, date, info
-
   date = holidays.memorialDay year
   info = name: 'Memorial Day', bank: true
-  observedInfo = name: 'Memorial Day (Observed)', bank: true
-  pushHolidayFromDate holidayArray, date, info, observedInfo
-
-  date = holidays.fathersDay year
-  info = name: 'Father\'s Day', public: true
   pushHolidayFromDate holidayArray, date, info
 
   date = holidays.independenceDay year
-  info = name: 'Independence Day', bank: true
+  info = name: 'Independence Day'
+  if 0 < date.getDay() < 6 then info.bank = true
   observedInfo = name: 'Independence Day (Observed)', bank: true
   pushHolidayFromDate holidayArray, date, info, observedInfo
 
   date = holidays.laborDay year
   info = name: 'Labor Day', bank: true
-  observedInfo = name: 'Labor Day (Observed)', bank: true
-  pushHolidayFromDate holidayArray, date, info, observedInfo
+  pushHolidayFromDate holidayArray, date, info
 
   date = holidays.columbusDay year
   info = name: 'Columbus Day', bank: true
-  observedInfo = name: 'Columbus Day (Observed)', bank: true
-  pushHolidayFromDate holidayArray, date, info, observedInfo
-
-  date = holidays.halloween year
-  info = name: 'Halloween', public: true
   pushHolidayFromDate holidayArray, date, info
 
   date = holidays.veteransDay year
   info = name: 'Veterans Day'
-  if date.getDay() isnt 6 then info.bank = true
+  if 0 < date.getDay() < 6 then info.bank = true
   observedInfo = name: 'Veterans Day (Observed)', bank: true
   pushHolidayFromDate holidayArray, date, info, observedInfo
 
@@ -198,11 +205,25 @@ holidays.add (year) ->
   pushHolidayFromDate holidayArray, date, info
 
   date = holidays.christmas year
-  info = name: 'Christmas Day', bank: true
+  info = name: 'Christmas Day'
+  if 0 < date.getDay() < 6 then info.bank = true
   observedInfo = name: 'Christmas Day (Observed)', bank: true
   pushHolidayFromDate holidayArray, date, info, observedInfo
 
   return holidayArray
 
+# add both to default instance
+holidays.add generateBankHolidays
+holidays.add generatePublicHolidays
 
 module.exports = holidays
+
+module.exports.bank = ->
+  bankHolidays = Holidays()
+  bankHolidays.add generateBankHolidays
+  return bankHolidays
+
+module.exports.public = ->
+  publicHolidays = Holidays()
+  publicHolidays.add generatePublicHolidays
+  return publicHolidays
