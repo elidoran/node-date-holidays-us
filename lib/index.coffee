@@ -31,6 +31,26 @@ holidays.martinLutherKingDay = (year) -> gen.third().monday().january year
 
 holidays.presidentsDay = (year) -> gen.third().monday().february year
 
+holidays.easter = (year) -> # implementation of anonymous gregorian algorithm
+  a = year % 19
+  b = Math.floor (year / 100)
+  c = year % 100
+  d = Math.floor (b / 4)
+  e = b % 4
+  f = Math.floor ((b + 8) / 25)
+  g = Math.floor ((b - f + 1) / 3)
+  h = (19 * a + b - d - g + 15) % 30
+  i = Math.floor (c / 4)
+  k = c % 4
+  L = (32 + 2 * e + 2 * i - h - k) % 7
+  m = Math.floor ((a + 11 * h + 22 * L) / 451)
+  month = Math.floor ((h + L - 7 * m + 114) / 31) - 1
+  day = ((h + L - 7 * m + 114) % 31) + 1
+
+  date = new Date year, month, day
+
+  return date
+
 holidays.mothersDay = (year) -> gen.second().sunday().may year
 
 holidays.memorialDay = (year) -> gen.last().monday().may year
@@ -130,6 +150,10 @@ holidays.add (year) ->
   info = name: 'President\'s Day', bank: true
   observedInfo = name: 'President\'s Day (Observed)', bank: true
   pushHolidayFromDate holidayArray, date, info, observedInfo
+
+  date = holidays.easter year
+  info = name: 'Easter', bank: false
+  pushHolidayFromDate holidayArray, date, info
 
   date = holidays.mothersDay year
   info = name: 'Mother\'s Day', public: true

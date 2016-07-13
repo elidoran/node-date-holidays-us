@@ -52,6 +52,15 @@ tests = [
   }
 
   {
+      name: 'easter'
+      main:
+        info: name: 'Easter', bank: false
+        year: 2016
+        month: 2
+        day: 27
+  }
+
+  {
     name: 'mothersDay'
     main:
       info: name: 'Mother\'s Day', public: true
