@@ -1,3 +1,9 @@
+0.3.0 - 2016/07/22
+
+1. accepted PR from @water42 with easter() implementation
+2. split generator into two groups: 1. bank; 2. public.
+3. added functions to use one group or the other instead of both
+
 0.2.0 - 2016/06/30
 
 1. removed "observed" from holidays which don't have them (copy-paste mistake)
