@@ -172,7 +172,8 @@ generateBankHolidays = (year) ->
   pushHolidayFromDate holidayArray, date, info
 
   date = holidays.presidentsDay year # Washington's Birthday...
-  info = name: 'President\'s Day', bank: true
+  info = name: 'President\'s Day'
+  if 0 < date.getDay() < 6 then info.bank = true
   observedInfo = name: 'President\'s Day (Observed)', bank: true
   pushHolidayFromDate holidayArray, date, info, observedInfo
 
