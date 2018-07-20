@@ -2,7 +2,7 @@ assert = require 'assert'
 holidays  = require '../../lib'
 
 tests = [
-  { # without observed day
+  { # without observed day (on a weekday)
     name: 'newYearsDay'
     main:
       info: name: 'New Year\'s Day', bank: true
@@ -10,10 +10,10 @@ tests = [
       month: 0
       day: 1
   }
-  { # with observed day
+  { # with observed day (on a Sunday)
     name: 'newYearsDay'
     main:
-      info: name: 'New Year\'s Day'
+      info: name: 'New Year\'s Day', bank: false
       year: 2017
       month: 0
       day: 1
@@ -22,6 +22,20 @@ tests = [
       year: 2017
       month: 0
       day: 2
+  }
+  { # with observed day (on a Saturday)
+    name: 'newYearsDay'
+    main:
+      info: name: 'New Year\'s Day', bank: false
+      year: 2011
+      month: 0
+      day: 1
+    observed:
+      info: name: 'New Year\'s Day (Observed)', bank: true
+      year: 2010
+      month: 11
+      day: 31
+    marked: true
   }
 
   {
@@ -98,7 +112,7 @@ tests = [
   { # with observed day
     name: 'independenceDay'
     main:
-      info: name: 'Independence Day'
+      info: name: 'Independence Day', bank: false
       year: 2015
       month: 6
       day: 4
@@ -147,7 +161,7 @@ tests = [
   { # without observed day, saturday
     name: 'veteransDay'
     main:
-      info: name: 'Veterans Day'
+      info: name: 'Veterans Day', bank: false
       year: 2017
       month: 10
       day: 11 # saturday
@@ -155,7 +169,7 @@ tests = [
   { # with observed day
     name: 'veteransDay'
     main:
-      info: name: 'Veterans Day'
+      info: name: 'Veterans Day', bank: false
       year: 2012
       month: 10
       day: 11 # sunday
@@ -186,7 +200,7 @@ tests = [
   { # with observed day
     name: 'christmas'
     main:
-      info: name: 'Christmas Day'
+      info: name: 'Christmas Day', bank: false
       year: 2016
       month: 11
       day: 25
@@ -275,13 +289,13 @@ describe 'test holidays-us', ->
 
         it 'direct function should return the date', ->
 
-          date = holidays[test.name] test.main.year
+          date = holidays[test.name](test.main.year)
           assert.equal date.getTime(), testDate.getTime()
 
         if test.observed?
           it 'the date has observed date attached', ->
 
-            date = holidays[test.name] test.main.year
+            date = holidays[test.name](test.main.year)
             observedDate = new Date test.observed.year, test.observed.month, test.observed.day
             assert.equal date.observed.getTime(), observedDate.getTime()
 
@@ -292,6 +306,7 @@ describe 'test holidays-us', ->
 
         if test.observed?
           it 'observed is available from getHoliday()', ->
+
             observedDate = new Date test.observed.year, test.observed.month, test.observed.day
             observedHoliday = holidays.getHoliday observedDate
             assert.deepEqual observedHoliday, test.observed.info
