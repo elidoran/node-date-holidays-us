@@ -2,7 +2,10 @@
   "name": "@date/holidays-us",
   "version": "0.3.1",
   "description": "USA bank and (some) public holidays",
-  "main": "lib",
+  "main": "lib/index.js",
+  "files": [
+    "lib/index.js"
+  ],
   "keywords": [
     "holidays",
     "holiday",
