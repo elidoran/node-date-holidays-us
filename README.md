@@ -1,7 +1,7 @@
 # @date/holidays-us
 [![Build Status](https://travis-ci.org/elidoran/node-date-holidays-us.svg?branch=master)](https://travis-ci.org/elidoran/node-date-holidays-us)
-[![Dependency Status](https://gemnasium.com/elidoran/node-date-holidays-us.png)](https://gemnasium.com/elidoran/node-date-holidays-us)
 [![npm version](https://badge.fury.io/js/%40date%2Fholidays-us.svg)](http://badge.fury.io/js/%40date%2Fholidays-us)
+[![Coverage Status](https://coveralls.io/repos/github/elidoran/node-date-holidays-us/badge.svg?branch=master)](https://coveralls.io/github/elidoran/node-date-holidays-us?branch=master)
 
 A `@date/holidays` instance with USA public and bank holidays.
 
