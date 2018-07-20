@@ -101,7 +101,7 @@ tests = [
       day: 19
   }
 
-  { # without observed day
+  { # without observed day (weekday)
     name: 'independenceDay'
     main:
       info: name: 'Independence Day', bank: true
@@ -109,7 +109,7 @@ tests = [
       month: 6
       day: 4
   }
-  { # with observed day
+  { # with observed day (on a Saturday)
     name: 'independenceDay'
     main:
       info: name: 'Independence Day', bank: false
@@ -121,6 +121,19 @@ tests = [
       year: 2015
       month: 6
       day: 3
+  }
+  { # with observed day (on a Sunday)
+    name: 'independenceDay'
+    main:
+      info: name: 'Independence Day', bank: false
+      year: 2010
+      month: 6
+      day: 4
+    observed:
+      info: name: 'Independence Day (Observed)', bank: true
+      year: 2010
+      month: 6
+      day: 5
   }
 
   {
@@ -289,29 +302,36 @@ describe 'test holidays-us', ->
 
         it 'direct function should return the date', ->
 
+          # calls holidays.<date calculator function>
           date = holidays[test.name](test.main.year)
           assert.equal date.getTime(), testDate.getTime()
-
-        if test.observed?
-          it 'the date has observed date attached', ->
-
-            date = holidays[test.name](test.main.year)
-            observedDate = new Date test.observed.year, test.observed.month, test.observed.day
-            assert.equal date.observed.getTime(), observedDate.getTime()
 
         it 'is available from getHoliday()', ->
 
           holiday = holidays.getHoliday testDate
           assert.deepEqual holiday, test.main.info
 
-        if test.observed?
-          it 'observed is available from getHoliday()', ->
-
-            observedDate = new Date test.observed.year, test.observed.month, test.observed.day
-            observedHoliday = holidays.getHoliday observedDate
-            assert.deepEqual observedHoliday, test.observed.info
-
         it 'correct date for isHoliday() returns true', ->
 
           result = holidays.isHoliday testDate
-          assert.equal result, true, 'correct date should return true'
+          assert.equal result, true
+
+        it 'other date for isHoliday() returns false', ->
+
+          result = holidays.isHoliday new Date 2001, 2, 3
+          assert.equal result, false
+
+        if test.observed?
+
+          observedDate = new Date(test.observed.year, test.observed.month, test.observed.day)
+
+          it 'the date has observed date attached', ->
+
+            # calls holidays.<date calculator function>
+            date = holidays[test.name](test.main.year)
+            assert.equal date.observed.getTime(), observedDate.getTime()
+
+          it 'observed is available from getHoliday()', ->
+
+            observedHoliday = holidays.getHoliday observedDate
+            assert.deepEqual observedHoliday, test.observed.info
