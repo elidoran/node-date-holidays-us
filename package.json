@@ -27,11 +27,12 @@
   "author": "Eli Doran <eli+npm@elidoran.com>",
   "license": "MIT",
   "scripts": {
-    "compile": "coffee --bare --compile lib",
-    "clean": "rm -rf lib/*.js",
-    "prepublish": "npm run compile",
-    "postpublish": "npm run clean",
-    "test": "mocha --compilers coffee:coffee-script/register --reporter spec --bail --check-leaks test/lib"
+    "test": "mocha --require coffee-script/register --reporter spec --bail --check-leaks test/lib/*.coffee",
+    "test6": "nave use 6 npm test",
+    "test8": "nave use 8 npm test",
+    "test10": "nave use 10 npm test",
+    "test-all": "npm run test6 && npm run test8 && npm run test10",
+    "coverage": "istanbul cover -x 'build/**' _mocha -- --require coffee-script/register -R spec test/lib/*.coffee"
   },
   "repository": {
     "type": "git",
@@ -39,14 +40,15 @@
   },
   "bugs": "http://github.com/elidoran/node-date-holidays-us/issues",
   "devDependencies": {
-    "coffee-script": "^1.10.0",
-    "mocha": "^2.3.3"
+    "coffeescript": "^1.12.7",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.2.0"
   },
   "dependencies": {
-    "@date/generator": "^0.1.0",
-    "@date/holidays": "^0.2.0"
+    "@date/generator": "^0.2.0",
+    "@date/holidays": "^0.3.0"
   },
   "engines": {
-    "node": ">=0.10"
+    "node": ">=6"
   }
 }
